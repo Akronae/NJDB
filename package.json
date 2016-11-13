@@ -1,0 +1,31 @@
+{
+  "name": "njdb",
+  "version": "1.0.0",
+  "description": "NJDB is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects. ",
+  "main": "NJDB.js",
+  "scripts": {
+    "test": "\"\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akronae/NJDB.git"
+  },
+  "keywords": [
+    "db",
+    "database",
+    "nodejsdb",
+    "nodejsdatabase",
+    "embedded",
+    "persistant",
+    "lightweight",
+    "little",
+    "json",
+    "njdb"
+  ],
+  "author": "Alexandre Daubricourt <alexr.daubricourt@gmail.com> (https://www.npmjs.com/~akrone)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Akronae/NJDB/issues"
+  },
+  "homepage": "https://github.com/Akronae/NJDB#readme"
+}
