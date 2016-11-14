@@ -2,14 +2,12 @@
 ## **SJDB in one sentence**
 SJDB (Simple JSON Database) is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects.
 
-----------
 
 
 ## **Warning**
 SJDB isn't a *real* database, i just made this little module for my projects, i don't need real database, and i don't want it. SJDB is not fast and stable as a real database and there no crash guarantee. *(see 'crash' & 'speed' sections)*.
 
 
-----------
 
 
 ## **Architecture**
@@ -19,7 +17,6 @@ It's made of this way because heavier a database file is, bigger is the operatio
 So i recommand you to split a big database *(heavier than 10 000 keys/values)* into other multiple databases for best perfs, i course, if you keep all your data in one big file, operation time still correct.
 
 
-----------
 
 ##**JDatabase public attributes and methods three**
 
@@ -118,5 +115,4 @@ Simple as "hello" isn't it ? ;)
     tableComp.delete()
 
 
-----------
 ##**Updating data every x time**
