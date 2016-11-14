@@ -1,14 +1,14 @@
 {
-  "name": "njdb",
-  "version": "1.0.0",
-  "description": "NJDB is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects. ",
-  "main": "NJDB.js",
+  "name": "sjdb",
+  "version": "1.0.1",
+  "description": "SJDB is a simple lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects. ",
+  "main": "SJDB.js",
   "scripts": {
-    "test": "\"\""
+    "getDocu": "console.log('For documentation, please look at https://github.com/Akronae/SJDB#readme')"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Akronae/NJDB.git"
+    "url": "git+https://github.com/Akronae/SJDB.git"
   },
   "keywords": [
     "db",
@@ -20,12 +20,13 @@
     "lightweight",
     "little",
     "json",
-    "njdb"
+    "sjdb",
+    "simple"
   ],
   "author": "Alexandre Daubricourt <alexr.daubricourt@gmail.com> (https://www.npmjs.com/~akrone)",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/Akronae/NJDB/issues"
+    "url": "https://github.com/Akronae/SJDB/issues"
   },
-  "homepage": "https://github.com/Akronae/NJDB#readme"
+  "homepage": "https://github.com/Akronae/SJDB#readme"
 }
