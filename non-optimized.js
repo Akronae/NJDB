@@ -125,7 +125,8 @@ class JDatabase {
                     let content = JSON.parse(data)
 
                     if ( !content[tableName][key] ) { this.log.write('key "' + key + '" doesn\' exists!', 'danger' ); return }
-                    content[tableName][key] = value
+                    if ( key == undefined ) { content[tableName] = value }
+                    else { content[tableName][key] = value }
                     fs.writeFileSync(dbPath, this.core.njdbfy(content))
                 },
 
