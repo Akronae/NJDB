@@ -23,7 +23,7 @@ So i recommand you to split a big database *(heavier than 10 000 keys/values)* i
     db
         .create('dbName'): Create a new database.
         .table('tableName'): Select table as target.
-            .create(): Create new table as '.table()' argument.
+            .create(template[{}@default]@optional): Create new table as '.table()' argument, and create table from template argument if there is one.
             .put('key', 'value'): Insert string or int as key into db, don't support objects. Use real editor.
             .update('key', 'newValue'): Update key.
             .get('key', 'value'): Get value from key.
@@ -31,7 +31,7 @@ So i recommand you to split a big database *(heavier than 10 000 keys/values)* i
             .get(): Get table.
             .delete(): Delete table.
         .log
-	        .write(logdata, type['info', 'danger', 'success', 'log'@default]): Log in console and write in log .log&.html.
+	        .write(logdata, type['info', 'danger', 'success', 'log'@default]@optional): Log in console and write in log .log&.html.
             .open(): Open logs in HTML file.
             .clear(): Clear logs.
         .dir
@@ -107,7 +107,7 @@ Well, the guest buy our apples, data is new deprecated !
 															}
 														}
 													})
-I '_' like 'namespace' for my tables.
+*(I use '_' like 'namespace' for my tables.)*
 And now if you want to print your FuckBookPro's RAM, just get the object with 
 
     var myFuckBook = _computers.get('FuckBookPro+sGoldDeluxeVersion')
@@ -131,4 +131,84 @@ First, I create my database with a table 'players' who look like this:
 
 So,
 
-    const 
+    const SJDB = require('SJDB')
+	var database = new SJDB.JDatabase('./database', 'data')
+	
+	// vars
+	var players = {
+	    1: {
+	        name: 'xXShadowKillerXx',
+	        resource: { gold: 12 }
+	    },
+	    2: {
+	        name: 'DarkBloodAssassinSuperKiller',
+	        resource: { gold: 4 }
+	    },
+	    3: {
+	        name: 'Joe',
+	        resource: { gold: 32 }
+	    }
+	}
+	
+	var _players = database.table('players')
+	
+	
+	// db
+	database.create()
+	_players.create(players)
+	
+	// Check if we get our players
+	console.log(_players.get())
+	
+	// output should be like: { '1': { name: 'xXShadowKillerXx', resource: { gold: 12 } },
+	//  '2': { name: 'DarkBloodAssassinSuperKiller', resource: { gold: 4 } },
+	//  '3': { name: 'Joe', resource: { gold: 32 } } }
+Okay, so if we want to update our players's gold each 5 000ms, we need to set an interval, get players loop throw increment players[loop].resource.gold by 2 and update player.
+
+    (...)
+    // vars
+	var _players = database.table('players')
+	
+	// db
+	setInterval(() => {
+	    var players = _players.get()
+	
+	    for ( var player in players ) {
+	        var newGold = parseInt(players[player].resource.gold) + 2
+	        players[player].resource.gold = newGold
+	
+	        _players.update(player, players[player])
+	    }
+	}, 5000)
+*(Integers are always stored as string)*
+
+And you can look at your db while node is running, players gold goes up !
+
+##**Miscs**
+*In this 'tutorial' i'll skip db creation etc.*
+
+**Compress database**
+You maybe want to compress ( not zip or anything else ) your database ( or delete all whitespaces ), for speed or size / weight.. this can be done by using `database.compress()` method!
+
+**Fancify database**
+If you've compressed your db and want to read it, just use `database.fancify()` method.
+
+**Logs**
+Sometimes, is good to log, make sure that `database.core.log = true`, next, use `database.log.write('simple log!', 'info')`, this will be logged into console and write into log. html&log files.
+Now if you want to see your logs use: `database.log.open()`, who will open your logs with fancy colors in current browser.
+Got too many logs ? `database.log.delete()`
+
+CAUTION: Don't log too much (throw loops etc.) else you will get an error.. :( ! (too many oponed files)
+
+
+<br/>
+Well, now, SJDB, don't get any secrets for you ! ;)
+
+#**About the author**
+Hey! :)
+My name is Alexandre Daubricourt, i'm from Paris, France (I'm sorry  if i made spellcheck mistakes :$), and I just created this little JSON storage module for my own uses, 'cause i don't want to pay real database hosting, and well SJDB work great so.. I just share what i made ^^
+
+**mail:** alexr.daubricourt@gmail.com
+**Twitter:** [@AlexDaubricourt](https://twitter.com/AlexDaubricourt)
+**Github:** [Akronae](https://github.com/Akronae)
+**npm:** [akrone](https://www.npmjs.com/~akrone)
