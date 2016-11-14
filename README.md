@@ -47,15 +47,14 @@ So i recommand you to split a big database *(heavier than 10 000 keys/values)* i
         .makeBenchmark(ops): Run a benchmark on a new db with arg Put, Update, Delete operations.
 
 #**Tutorials**
-*In this tutorials i don't use SJDB as npm module.*
 ##**The basics**
 First of all, we need to import SJDB
 
-    const SJDB = require('./SJDB')
+    const SJDB = require('SJDB')
     
 Then, let's instantiate our database: **{** JDatabase (class, 2 args) [@arg1: folder path, @arg2: datbase name (without .json)] **}**
 
-    var database = new SJDB.JDatabase('./', 'database')
+    var database = new SJDB.JDatabase('./database', 'data')
 Next, you can set parameters like `database.db.isCompressed = true` for data compression and remember that, even if it's not recommanded, you are able to reset db path with `database.file.path` for database file, `database.dir.path` for folder where your db is.
 
 When all is done, we just need to build our database with
@@ -89,16 +88,16 @@ Well, the guest buy our apples, data is new deprecated !
 
 **Okay!** we know how to store simple value in our database but what if we sell computers ? We will not store a string for computers caracteristics, hum.. is there other things ? *humps! objects, huumps!*
 
-    tableComp = database.table('computers')
-    tableComp.create()
-    tableComp.put('FuckBookPro+sGoldDeluxeVersion', {
+    var _computers = database.table('computers')
+    _computers.create()
+    _computers.put('FuckBookPro+sGoldDeluxeVersion', {
 													screen: {
 													    res: '12:4',
 													    color: '8bit'
 													    },
 													RAM: {
-														type: DDR1,
-														size: 4 bytes
+														type: 'DDR1',
+														size: '4 bytes'
 														},
 													dontGetIdea: {
 														simpleObj: {
@@ -108,11 +107,28 @@ Well, the guest buy our apples, data is new deprecated !
 															}
 														}
 													})
+I '_' like 'namespace' for my tables.
+And now if you want to print your FuckBookPro's RAM, just get the object with 
+
+    var myFuckBook = _computers.get('FuckBookPro+sGoldDeluxeVersion')
+	console.log('RAM:', myFuckBook.RAM)
+
 Simple as "hello" isn't it ? ;)
 
 **I'v gone too far**, let's delete entire table !
 
-    tableComp.delete()
-
+    _computers.delete()
 
 ##**Updating data every x time**
+There is a lot of embedded databases, so, why did i make another one ?
+The answer is simple: I didn't find one who is really dynamicle, you don't see what i mean ? I'll explain you.
+
+Let's say that we got an online game like oGame, for exemple, every 5 000ms, we increment players gold by 2.
+
+First, I create my database with a table 'players' who look like this:
+
+    player: { name, resource : { gold } }
+
+So,
+
+    const 
