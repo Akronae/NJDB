@@ -27,7 +27,7 @@ class JDatabase {
         this.core = {
             handleEx: false,
             log: {
-                active: false,
+                active: true,
                 dir: (this.dir.path + this.file.path + '/log').toString()
             },
             njdbfy: (data) => {
@@ -55,33 +55,46 @@ class JDatabase {
 
         this.tables = { }
 
-        this.create = () => {
+        this.create = (force) => {
             let dbPath = this.dir.path + '/' + this.file.name
             let dirExists = true
             let fileExists = true
             let toWrite
 
-            // Check for dir
-            try {
-                fs.accessSync(this.dir.path)
-            } catch (e) {
-                dirExists = false
-                fs.mkdirSync(this.dir.path)
-                this.log.write('Creating directory..', 'info')
+            // I don't know why i got a bug when dir root and file path are the same :|
+            if ( this.dir.path.substring(2, this.length) == this.file.path ) { this.file.path += (Math.random().toString()).substring(2, 3) }
+
+            // If true, disable any protections.
+            if ( force != true ) {
+
+                // Check for dir
+                try {
+                    fs.accessSync(this.dir.path)
+                } catch (e) {
+                    dirExists = false
+                    fs.mkdirSync(this.dir.path)
+                    this.log.log('Creating directory..', 'info')
+                }
+
+                // Check for file
+                try {
+                    fs.accessSync(this.file.path)
+                } catch (e) {
+                    fileExists = false
+                }
+
+                if ( dirExists ) { this.log.log(this.dir.path + ' directory already exists! For security reasons, to overwrite your databases, please delete them manualy (/!\\ or give true as argument /!\\).', 'danger'); return }
+                if ( fileExists ) { this.log.log(this.file.path + ' database already exists! For security reasons, to overwrite your database, please delete it manualy (/!\\or give true as argument /!\\).', 'danger'); return }
+
+                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.njdbfy( {} ))
+                fs.writeFileSync( this.dir.path + '/' + 'log.log', '')
+                fs.writeFileSync( this.dir.path + '/' + 'log.html', '')
             }
-
-            // Check for file
-            try {
-                fs.accessSync(this.file.path)
-            } catch (e) {
-                fileExists = false
+            else {
+                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.njdbfy( {} ))
+                fs.writeFileSync( this.dir.path + '/' + 'log.log', '')
+                fs.writeFileSync( this.dir.path + '/' + 'log.html', '')
             }
-
-
-            if ( dirExists ) { this.log.write(this.dir.path + ' directory already exists! For security reasons, to overwrite your databases, please delete them manualy.', 'danger'); return }
-            if ( fileExists ) { this.log.write(this.file.path + ' database already exists! For security reasons, to overwrite your database, please delete it manualy.', 'danger'); return }
-
-            fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.njdbfy( {} ))
 
         }
 
@@ -104,10 +117,10 @@ class JDatabase {
                     let data = fs.readFileSync(dbPath, 'utf8')
                     let content = JSON.parse(data)
 
-                    if ( content[tableName][key] ) { this.log.write('key "' + key + '" already exists! For security reasons, to overwrite it, please delete this key manualy.', 'danger' ); return }
+                    if ( content[tableName][key] ) { this.log.log('key "' + key + '" already exists! For security reasons, to overwrite it, please delete this key manualy.', 'danger' ); return }
                     content[tableName][key] = value
                     fs.writeFileSync(dbPath, this.core.njdbfy(content))
-                    this.log.write(`Put ${value} as ${key} in ${dbPath}`)
+                    this.log.log(`Put ${value} as ${key} in ${dbPath}`)
                 },
 
                 get: (key, fancy) => {
@@ -115,7 +128,7 @@ class JDatabase {
                     let content = JSON.parse(data)
 
                     if ( !key ) { return content[tableName] }
-                    if ( !content[tableName][key] ) { this.log.write('key "' + key + '" doesn\' exists!', 'danger' ); return }
+                    if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                     if ( !fancy ){ return (content[tableName][key]) }
                     else { return this.core.njdbfy( content[tableName][key] ) }
                 },
@@ -124,7 +137,7 @@ class JDatabase {
                     let data = fs.readFileSync(dbPath, 'utf8')
                     let content = JSON.parse(data)
 
-                    if ( !content[tableName][key] ) { this.log.write('key "' + key + '" doesn\' exists!', 'danger' ); return }
+                    if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                     if ( key == undefined ) { content[tableName] = value }
                     else { content[tableName][key] = value }
                     fs.writeFileSync(dbPath, this.core.njdbfy(content))
@@ -135,17 +148,17 @@ class JDatabase {
                     let content = JSON.parse(data)
 
                     if (!key) {
-                        if (!content[tableName]) { this.log.write('table ' + tableName + ' doesn\'t exists!', 'danger'); return }
+                        if (!content[tableName]) { this.log.log('table ' + tableName + ' doesn\'t exists!', 'danger'); return }
                         else {
                             delete content[tableName]
                             fs.writeFileSync(dbPath, this.core.njdbfy(content))
-                            this.log.write(`Table ${tableName} deleted!`)
+                            this.log.log(`Table ${tableName} deleted!`)
                         }
                     } else {
-                        if ( !content[tableName][key] ) { this.log.write('key "' + key + '" doesn\' exists!', 'danger' ); return }
+                        if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                         delete content[tableName][key]
                         fs.writeFileSync(dbPath, this.core.njdbfy(content))
-                        this.log.write(`Key ${key} of table ${tableName} was deleted!`)
+                        this.log.log(`Key ${key} of table ${tableName} was deleted!`)
                     }
                 }
 
@@ -155,6 +168,10 @@ class JDatabase {
         }
 
         this.log = {
+            log: (data, type) => {
+                    if ( type == 'danger' ) { console.error(data) }
+                    else { console.log(data) }
+            },
             write: (data, type) => {
                     if ( !this.core.log.active ) { return }
                     if (type == undefined) { type = 'log' }
@@ -286,7 +303,7 @@ class JDatabase {
                     console.log(`< NJDB Query CLI help >
 
 ${indentifier}db
-    .create('dbName'): Create a new database.
+    .create(force[true||false@default]): Create a new database. Overwrite if true gived as arg.
     .table('tableName'): Select table as target.
         .create(): Create new table as '.table()' argument.
 	.put('key', 'value'): Insert string or int as key into db, don't support objects. Use real editor.
