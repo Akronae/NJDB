@@ -5,7 +5,7 @@ SJDB (Simple JSON Database) is a very lightweight (2.75Kb) embedded/persistant J
 
 
 ## **Warning**
-SJDB isn't a *real* database, i just made this little module for my projects, i don't need real database, and i don't want it. SJDB is not fast and stable as a real database and there no crash guarantee. *(see 'crash' & 'speed' sections)*.
+SJDB isn't a *real* database, i just made this little module for my projects, i don't need real database, and i don't want it. SJDB is not fast and stable as a real database and there no crash guarantee. *('speed' section)*.
 
 
 
@@ -15,6 +15,33 @@ Data is stored into JSON files, themselves stored in a folder;
 When you create a new JDatabase object, you need to specify a folder path, and database name;
 It's made of this way because heavier a database file is, bigger is the operation's time;
 So i recommand you to split a big database *(heavier than 10 000 keys/values)* into other multiple databases for best perfs, i course, if you keep all your data in one big file, operation time still correct.
+
+
+
+## **Speed**  
+SJDB is not made to be fast, but with light data files SJDB is relatively fast.  
+**Benchmark**  
+-**10 ops**  
+Put: 12ms  
+Update: 10ms  
+Delete: 12ms  
+
+-**100 ops**  
+Put: 14ms  
+Update: 10ms  
+Delete: 12ms  
+
+-**1 000 ops**  
+Put: 3 641ms  
+Update: 6 687ms  
+Delete: 4 036ms  
+
+-**10 000 ops**    
+Put: 102 382ms  
+Update: 332 472ms  
+Delete: 215 528ms  
+  
+Like you can see, don't get more than 10 000 keys in one file, just spleet a big database into multiples dbs !
 
 
 
