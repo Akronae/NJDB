@@ -50,7 +50,7 @@ You can make benchmarks by using `sjdb.makeBenchmark(numberOfOps)`, or by the sj
 ##**JDatabase public attributes and methods three**
 
     db
-        .create('dbName'): Create a new database.
+        .create(force[true||false@default]): Create a new database. If true, disable any security.
         .table('tableName'): Select table as target.
             .create(template[{}@default]@optional): Create new table as '.table()' argument, and create table from template argument if there is one.
             .put('key', 'value'): Insert string or int as key into db, don't support objects. Use real editor.
