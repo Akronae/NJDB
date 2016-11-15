@@ -1,11 +1,11 @@
 # **Description**
-## **SJDB in one sentence**
-SJDB (Simple JSON Database) is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects.
+## **sjdb in one sentence**
+sjdb (Simple JSON Database) is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects.
 
 
 
 ## **Warning**
-SJDB isn't a *real* database, i just made this little module for my projects, i don't need real database, and i don't want it. SJDB is not fast and stable as a real database and there no crash guarantee. *('speed' section)*.
+sjdb isn't a *real* database, i just made this little module for my projects, i don't need real database, and i don't want it. sjdb is not fast and stable as a real database and there no crash guarantee. *('speed' section)*.
 
 
 
@@ -19,7 +19,7 @@ So i recommand you to split a big database *(heavier than 10 000 keys/values)* i
 
 
 ## **Speed**  
-SJDB is not made to be fast, but with light data files SJDB is relatively fast.  
+sjdb is not made to be fast, but with light data files sjdb is relatively fast.  
 **Benchmark**  
 -**10 ops**  
 Put: 12ms  
@@ -42,6 +42,8 @@ Update: 332 472ms
 Delete: 215 528ms  
   
 Like you can see, don't get more than 10 000 keys in one file, just spleet a big database into multiples dbs !
+
+You can make benchmarks by using `sjdb.makeBenchmark(numberOfOps)`, or by the sjdb Query CLI `db.makeBenchmark(ops)`
 
 
 
@@ -66,22 +68,21 @@ Like you can see, don't get more than 10 000 keys in one file, just spleet a big
 	    .file
 		    .path = "path": file path
         .core
-	        .handleEx = "true@default||false" : Define if SJDB handle or not all exeptions (to keep data safe if an exeption ocure).
+	        .handleEx = "true@default||false" : Define if sjdb handle or not all exeptions (to keep data safe if an exeption ocure).
             .compress(): Improve database's speed by compressing data, use only for production.
             .fancify(): Fancify database for humain readability, less faster, use this command only for reading.
         .db
 	        .isCompressed = "true||false@default": Unlike '.compress()' method, each time that the db is modified, new data will be write with compressed or not style.
-        .makeBenchmark(ops): Run a benchmark on a new db with arg Put, Update, Delete operations.
-
+	        
 #**Tutorials**
 ##**The basics**
-First of all, we need to import SJDB
+First of all, we need to import sjdb
 
-    const SJDB = require('SJDB')
+    const sjdb = require('sjdb')
     
 Then, let's instantiate our database: **{** JDatabase (class, 2 args) [@arg1: folder path, @arg2: datbase name (without .json)] **}**
 
-    var database = new SJDB.JDatabase('./database', 'data')
+    var database = new sjdb.JDatabase('./database', 'data')
 Next, you can set parameters like `database.db.isCompressed = true` for data compression and remember that, even if it's not recommanded, you are able to reset db path with `database.file.path` for database file, `database.dir.path` for folder where your db is.
 
 When all is done, we just need to build our database with
@@ -146,6 +147,17 @@ Simple as "hello" isn't it ? ;)
 
     _computers.delete()
 
+##**Njdb Query CLI**
+
+Sometimes it's pretty boring to make `node index`, `<Querys>`, `Ctrl+c` and again !
+It's why it made a simple CLI, njdb QueryCLI.
+
+You can call this function by using `njdb.QueryCLI(njdbCLIIdentifier['-/'@default])` ( you left an undef. argument if you don't use any other CLI ).
+
+And well, you can do the same things that in your editor, the only hic is that you can put objects :$
+
+*( type '-/help' for list of commands)*
+
 ##**Updating data every x time**
 There is a lot of embedded databases, so, why did i make another one ?
 The answer is simple: I didn't find one who is really dynamicle, you don't see what i mean ? I'll explain you.
@@ -158,8 +170,8 @@ First, I create my database with a table 'players' who look like this:
 
 So,
 
-    const SJDB = require('SJDB')
-	var database = new SJDB.JDatabase('./database', 'data')
+    const sjdb = require('sjdb')
+	var database = new sjdb.JDatabase('./database', 'data')
 	
 	// vars
 	var players = {
@@ -229,11 +241,11 @@ CAUTION: Don't log too much (throw loops etc.) else you will get an error.. :( !
 
 
 <br/>
-Well, now, SJDB, don't get any secrets for you ! ;)
+Well, now, sjdb, don't get any secrets for you ! ;)
 
 #**About the author**
 Hey! :)
-My name is Alexandre Daubricourt, i'm from Paris, France (I'm sorry  if i made spellcheck mistakes :$), and I just created this little JSON storage module for my own uses, 'cause i don't want to pay real database hosting, and well SJDB work great so.. I just share what i made ^^
+My name is Alexandre Daubricourt, i'm from Paris, France (I'm sorry  if i made spellcheck mistakes :$), and I just created this little JSON storage module for my own uses, 'cause i don't want to pay real database hosting, and well sjdb work great so.. I just share what i made ^^
 
 **mail:** alexr.daubricourt@gmail.com
 **Twitter:** [@AlexDaubricourt](https://twitter.com/AlexDaubricourt)
