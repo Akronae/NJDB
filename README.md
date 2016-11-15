@@ -147,12 +147,12 @@ Simple as "hello" isn't it ? ;)
 
     _computers.delete()
 
-##**Njdb Query CLI**
+##**Sjdb Query CLI**
 
 Sometimes it's pretty boring to make `node index`, `<Querys>`, `Ctrl+c` and again !
-It's why it made a simple CLI, njdb QueryCLI.
+It's why it made a simple CLI, sjdb QueryCLI.
 
-You can call this function by using `njdb.QueryCLI(njdbCLIIdentifier['-/'@default])` ( you left an undef. argument if you don't use any other CLI ).
+You can call this function by using `sjdb.QueryCLI(sjdbCLIIdentifier['-/'@default])` ( you left an undef. argument if you don't use any other CLI ).
 
 And well, you can do the same things that in your editor, the only hic is that you can put objects :$
 
