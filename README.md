@@ -152,7 +152,7 @@ Simple as "hello" isn't it ? ;)
 Sometimes it's pretty boring to make `node index`, `<Querys>`, `Ctrl+c` and again !
 It's why it made a simple CLI, sjdb QueryCLI.
 
-You can call this function by using `sjdb.QueryCLI(sjdbCLIIdentifier['-/'@default])` ( you left an undef. argument if you don't use any other CLI ).
+You can call this function by using `sjdb.QueryCLI(sjdbCLIIdentifier['-/'@default])` ( left '' as arg if you don't use any other CLI ).
 
 And well, you can do the same things that in your editor, the only hic is that you can put objects :$
 
@@ -226,11 +226,14 @@ And you can look at your db while node is running, players gold goes up !
 ##**Miscs**
 *In this 'tutorial' i'll skip db creation etc.*
 
+
 **Compress database**
 You maybe want to compress ( not zip or anything else ) your database ( or delete all whitespaces ), for speed or size / weight.. this can be done by using `database.compress()` method!
 
+
 **Fancify database**
 If you've compressed your db and want to read it, just use `database.fancify()` method.
+
 
 **Logs**
 Sometimes, is good to log, make sure that `database.core.log = true`, next, use `database.log.write('simple log!', 'info')`, this will be logged into console and write into log. html&log files.
