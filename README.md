@@ -1,6 +1,7 @@
+[![NPM](https://nodei.co/npm/sjdb.png)](https://nodei.co/npm/sjdb/)
 # **Description**
 ## **sjdb in one sentence**
-sjdb (Simple JSON Database) is a very lightweight (2.75Kb) embedded/persistant JSON database to Node.js, made for little projects.
+sjdb (Simple JSON Database) is a very lightweight (2.75Kb) with 0 dependencie, embedded/persistant JSON database to Node.js, made for little projects.
 
 
 
@@ -118,27 +119,29 @@ Well, the guest buy our apples, data is new deprecated !
 
     var _computers = database.table('computers')
     _computers.create()
-    _computers.put('FuckBookPro+sGoldDeluxeVersion', {
-													screen: {
-													    res: '12:4',
-													    color: '8bit'
-													    },
-													RAM: {
-														type: 'DDR1',
-														size: '4 bytes'
-														},
-													dontGetIdea: {
-														simpleObj: {
-																youCanGoDeeper: {
-																				weShouldStop: true
-																			}
-															}
-														}
-													})
+    _computers.put('FuckBook', {
+								screen: {
+									res: '12:4',
+									color: '8bit'
+									},
+								RAM: {
+									type: 'DDR1',
+									size: '4 bytes'
+									},
+								dontGetIdea: {
+									simpleObj: {
+										youCanGoDeeper: {
+											weShouldStop: true
+										}
+									}
+								}
+								})  
+							  
+
 *(I use '_' like 'namespace' for my tables.)*
 And now if you want to print your FuckBookPro's RAM, just get the object with 
 
-    var myFuckBook = _computers.get('FuckBookPro+sGoldDeluxeVersion')
+    var myFuckBook = _computers.get('FuckBook')
 	console.log('RAM:', myFuckBook.RAM)
 
 Simple as "hello" isn't it ? ;)
