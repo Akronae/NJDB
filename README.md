@@ -1,4 +1,4 @@
-[![Icon]](http://img15.hostingpics.net/pics/332336sloth.png)
+![Icon](http://img15.hostingpics.net/pics/332336sloth.png)
 [![NPM](https://nodei.co/npm/sjdb.png)](https://nodei.co/npm/sjdb/)
 # **Description**
 ## **sjdb in one sentence**
