@@ -169,6 +169,7 @@ class JDatabase {
 
         this.log = {
             log: (data, type) => {
+                    if ( !this.core.log.active ) { return }
                     if ( type == 'danger' ) { console.error(data) }
                     else { console.log(data) }
             },
