@@ -1,3 +1,4 @@
+[![Icon]](http://img15.hostingpics.net/pics/332336sloth.png)
 [![NPM](https://nodei.co/npm/sjdb.png)](https://nodei.co/npm/sjdb/)
 # **Description**
 ## **sjdb in one sentence**
@@ -14,7 +15,7 @@ sjdb isn't a *real* database, i just made this little module for my projects, i 
 ## **Architecture**
 Data is stored into JSON files, themselves stored in a folder;
 When you create a new JDatabase object, you need to specify a folder path, and database name;
-It's made of this way because heavier a database file is, bigger is the operation's time;
+It's made of this way because heavier is a database file, bigger is the operation's time;
 So i recommand you to split a big database *(heavier than 10 000 keys/values)* into other multiple databases for best perfs, i course, if you keep all your data in one big file, operation time still correct.
 
 
@@ -244,3 +245,5 @@ My name is Alexandre Daubricourt, i'm from Paris, France (I'm sorry  if i made s
 **Twitter:** [@AlexDaubricourt](https://twitter.com/AlexDaubricourt)
 **Github:** [Akronae](https://github.com/Akronae)
 **npm:** [akrone](https://www.npmjs.com/~akrone)
+<br/>
+<div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
