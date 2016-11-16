@@ -119,23 +119,10 @@ Well, the guest buy our apples, data is new deprecated !
 
     var _computers = database.table('computers')
     _computers.create()
-    _computers.put('FuckBook', {
-								screen: {
-									res: '12:4',
-									color: '8bit'
-									},
-								RAM: {
-									type: 'DDR1',
-									size: '4 bytes'
-									},
-								dontGetIdea: {
-									simpleObj: {
-										youCanGoDeeper: {
-											weShouldStop: true
-										}
-									}
-								}
-								})  
+    _computers.put('FuckBook', { screen: { res: '12:4', color: '8bit' },
+		RAM: { type: 'DDR1', size: '4 bytes' },
+		dontGetIdea: { simpleObj: { youCanGoDeeper: { weShouldStop: true } } }
+	})  
 							  
 
 *(I use '_' like 'namespace' for my tables.)*
