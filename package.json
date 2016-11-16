@@ -1,6 +1,6 @@
 {
   "name": "sjdb",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "The simple lightweight (2.75Kb) with 0 depencies embedded/persistant JSON database to Node.js, made for little projects. ",
   "main": "SJDB.js",
   "scripts": {
