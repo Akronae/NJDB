@@ -1,5 +1,16 @@
 ![Icon](http://img15.hostingpics.net/pics/332336sloth.png)
 [![NPM](https://nodei.co/npm/sjdb.png)](https://nodei.co/npm/sjdb/)
+
+# **Release Note**
+## r 1.1.0  
+
++ One parameter added to db.create() who is of bool type, 'force', mean that all security will be avoided
++ You can now create multiples DB in the same folder
++ Added `db.core.secureMod` bool => if true, you can't create db's in existing folder, false@default
++ Log file's name start with their db name
++ Log system has been improved and corrected
++ CLI Text has been corrected
+
 # **Description**
 ## **sjdb in one sentence**
 sjdb (Simple JSON Database) is a very lightweight (2.75Kb) with 0 dependencie, embedded/persistant JSON database to Node.js, made for little projects.
@@ -42,7 +53,7 @@ Delete: 4 036ms
 Put: 102 382ms  
 Update: 332 472ms  
 Delete: 215 528ms  
-  
+
 Like you can see, don't get more than 10 000 keys in one file, just spleet a big database into multiples dbs !
 
 You can make benchmarks by using `sjdb.makeBenchmark(numberOfOps)`, or by the sjdb Query CLI `db.makeBenchmark(ops)`
@@ -75,13 +86,13 @@ You can make benchmarks by using `sjdb.makeBenchmark(numberOfOps)`, or by the sj
             .fancify(): Fancify database for humain readability, less faster, use this command only for reading.
         .db
 	        .isCompressed = "true||false@default": Unlike '.compress()' method, each time that the db is modified, new data will be write with compressed or not style.
-	        
+
 #**Tutorials**
 ##**The basics**
 First of all, we need to import sjdb
 
     const sjdb = require('sjdb')
-    
+
 Then, let's instantiate our database: **{** JDatabase (class, 2 args) [@arg1: folder path, @arg2: datbase name (without .json)] **}**
 
     var database = new sjdb.JDatabase('./database', 'data')
@@ -124,10 +135,10 @@ Well, the guest buy our apples, data is new deprecated !
 		RAM: { type: 'DDR1', size: '4 bytes' },
 		dontGetIdea: { simpleObj: { youCanGoDeeper: { weShouldStop: true } } }
 	})  
-							  
+
 
 *(I use '_' like 'namespace' for my tables.)*
-And now if you want to print your FuckBookPro's RAM, just get the object with 
+And now if you want to print your FuckBookPro's RAM, just get the object with
 
     var myFuckBook = _computers.get('FuckBook')
 	console.log('RAM:', myFuckBook.RAM)
@@ -145,7 +156,7 @@ It's why it made a simple CLI, sjdb QueryCLI.
 
 You can call this function by using `sjdb.QueryCLI(sjdbCLIIdentifier['-/'@default])` ( left '' as arg if you don't use any other CLI ).
 
-And well, you can do the same things that in your editor, the only hic is that you can put objects :$
+And well, you can do the same things that in your editor, the only hic is that you can't put objects :$
 
 *( type '-/help' for list of commands)*
 
@@ -163,7 +174,7 @@ So,
 
     const sjdb = require('sjdb')
 	var database = new sjdb.JDatabase('./database', 'data')
-	
+
 	// vars
 	var players = {
 	    1: {
@@ -179,17 +190,17 @@ So,
 	        resource: { gold: 32 }
 	    }
 	}
-	
+
 	var _players = database.table('players')
-	
-	
+
+
 	// db
 	database.create()
 	_players.create(players)
-	
+
 	// Check if we get our players
 	console.log(_players.get())
-	
+
 	// output should be like: { '1': { name: 'xXShadowKillerXx', resource: { gold: 12 } },
 	//  '2': { name: 'DarkBloodAssassinSuperKiller', resource: { gold: 4 } },
 	//  '3': { name: 'Joe', resource: { gold: 32 } } }
@@ -198,15 +209,15 @@ Okay, so if we want to update our players's gold each 5 000ms, we need to set an
     (...)
     // vars
 	var _players = database.table('players')
-	
+
 	// db
 	setInterval(() => {
 	    var players = _players.get()
-	
+
 	    for ( var player in players ) {
 	        var newGold = parseInt(players[player].resource.gold) + 2
 	        players[player].resource.gold = newGold
-	
+
 	        _players.update(player, players[player])
 	    }
 	}, 5000)

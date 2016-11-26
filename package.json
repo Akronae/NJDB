@@ -15,6 +15,8 @@
     "database",
     "nodejsdb",
     "nodejsdatabase",
+    "localStorage",
+    "flat",
     "embedded",
     "persistant",
     "lightweight",

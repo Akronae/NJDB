@@ -25,12 +25,13 @@ class JDatabase {
         }
 
         this.core = {
+            secureMod: false,
             handleEx: false,
             log: {
-                active: true,
+                active: false,
                 dir: (this.dir.path + this.file.path + '/log').toString()
             },
-            njdbfy: (data) => {
+            sjdbfy: (data) => {
                 if ( this.db.isCompacted ) { return JSON.stringify(data) }
                 else { return JSON.stringify(data, null, 4) }
             },
@@ -50,7 +51,7 @@ class JDatabase {
         }
             // Avoid crashes
             if ( this.core.handleEx == true ) {
-                process.on(`uncaughtException`, (err) => { this.log.write( `An exeption occured, NJDB handle every exeptions for data security, if you want that NJDB stop handling exeptions, set 'db.core.handleEx = false', error: \n${err}`, 'danger') })
+                process.on(`uncaughtException`, (err) => { this.log.write( `An exeption occured, SJDB handle every exeptions for data security, if you want that SJDB stop handling exeptions, set 'db.core.handleEx = false', error: \n${err}`, 'danger') })
             }
 
         this.tables = { }
@@ -83,17 +84,21 @@ class JDatabase {
                     fileExists = false
                 }
 
-                if ( dirExists ) { this.log.log(this.dir.path + ' directory already exists! For security reasons, to overwrite your databases, please delete them manualy (/!\\ or give true as argument /!\\).', 'danger'); return }
+                if ( dirExists && this.core.secureMod == true ) { this.log.log(this.dir.path + ' directory already exists! For security reasons, to overwrite your databases, please delete them manualy (/!\\ or give true as argument /!\\).', 'danger'); return }
                 if ( fileExists ) { this.log.log(this.file.path + ' database already exists! For security reasons, to overwrite your database, please delete it manualy (/!\\or give true as argument /!\\).', 'danger'); return }
 
-                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.njdbfy( {} ))
-                fs.writeFileSync( this.dir.path + '/' + 'log.log', '')
-                fs.writeFileSync( this.dir.path + '/' + 'log.html', '')
+                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.sjdbfy( {} ))
+                if ( this.core.log.active == true ) {
+                    fs.writeFileSync( this.dir.path + '/' + this.file.path + '_log.log', '')
+                    fs.writeFileSync( this.dir.path + '/' + this.file.path + '_log.html', '')
+                }
             }
             else {
-                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.njdbfy( {} ))
-                fs.writeFileSync( this.dir.path + '/' + 'log.log', '')
-                fs.writeFileSync( this.dir.path + '/' + 'log.html', '')
+                fs.writeFileSync( this.dir.path + '/' + this.file.path + '.json', this.core.sjdbfy( {} ))
+                if ( this.core.log.active == true ) {
+                    fs.writeFileSync( this.dir.path + '/' + this.file.path + '_log.log', '')
+                    fs.writeFileSync( this.dir.path + '/' + this.file.path + '_log.html', '')
+                }
             }
 
         }
@@ -109,7 +114,7 @@ class JDatabase {
                     let content = JSON.parse(data)
                     if ( content[tableName] ) { this.log.write('table "' + tableName + '" already exists! For security reasons, to overwrite it, please delete this table manualy.', 'danger' ); return }
                     content[tableName] = template
-                    fs.writeFileSync(dbPath, this.core.njdbfy(content))
+                    fs.writeFileSync(dbPath, this.core.sjdbfy(content))
 
                 },
 
@@ -119,7 +124,7 @@ class JDatabase {
 
                     if ( content[tableName][key] ) { this.log.log('key "' + key + '" already exists! For security reasons, to overwrite it, please delete this key manualy.', 'danger' ); return }
                     content[tableName][key] = value
-                    fs.writeFileSync(dbPath, this.core.njdbfy(content))
+                    fs.writeFileSync(dbPath, this.core.sjdbfy(content))
                     this.log.log(`Put ${value} as ${key} in ${dbPath}`)
                 },
 
@@ -130,7 +135,7 @@ class JDatabase {
                     if ( !key ) { return content[tableName] }
                     if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                     if ( !fancy ){ return (content[tableName][key]) }
-                    else { return this.core.njdbfy( content[tableName][key] ) }
+                    else { return this.core.sjdbfy( content[tableName][key] ) }
                 },
 
                 update: (key, value) => {
@@ -140,7 +145,7 @@ class JDatabase {
                     if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                     if ( key == undefined ) { content[tableName] = value }
                     else { content[tableName][key] = value }
-                    fs.writeFileSync(dbPath, this.core.njdbfy(content))
+                    fs.writeFileSync(dbPath, this.core.sjdbfy(content))
                 },
 
                 delete: (key) => {
@@ -151,13 +156,13 @@ class JDatabase {
                         if (!content[tableName]) { this.log.log('table ' + tableName + ' doesn\'t exists!', 'danger'); return }
                         else {
                             delete content[tableName]
-                            fs.writeFileSync(dbPath, this.core.njdbfy(content))
+                            fs.writeFileSync(dbPath, this.core.sjdbfy(content))
                             this.log.log(`Table ${tableName} deleted!`)
                         }
                     } else {
                         if ( !content[tableName][key] ) { this.log.log('key "' + key + '" doesn\' exists!', 'danger' ); return }
                         delete content[tableName][key]
-                        fs.writeFileSync(dbPath, this.core.njdbfy(content))
+                        fs.writeFileSync(dbPath, this.core.sjdbfy(content))
                         this.log.log(`Key ${key} of table ${tableName} was deleted!`)
                     }
                 }
@@ -171,7 +176,7 @@ class JDatabase {
             log: (data, type) => {
                     if ( !this.core.log.active ) { return }
                     if ( type == 'danger' ) { console.error(data) }
-                    else { console.log(data) }
+                    else { console.log('[SJDB]', data) }
             },
             write: (data, type) => {
                     if ( !this.core.log.active ) { return }
@@ -188,8 +193,8 @@ class JDatabase {
                     fs.appendFile(this.dir.path + this.file.path + '/log' + '.log', time + ' [' + type + ']' + ' >> ' + data + '\n')
                     fs.appendFile(this.dir.path + this.file.path + '/log' + '.html', '<span style="color:grey;">' + time + '</span>' + '<span style="' + typeStyle + '">' + ' [' + type + ']' + '</span>' +  ' >> ' + '<span style="' + msgStyle + '">' + data + '</span>' + '<br/>')
 
-                    if (type == 'danger') { console.log(data) }
-                    else { console.log(data) }
+                    if (type == 'danger') { console.log('[SJDB]', data) }
+                    else { console.log('[SJDB]', data) }
 
             },
             open: () => {
@@ -199,7 +204,7 @@ class JDatabase {
                     var cmd = 'cd database & log.html';
 
                     exec(cmd, function(error, stdout, stderr) {
-                        if (error) console.log(error)
+                        if (error) console.log('[SJDB]', error)
                     });
                 } else if( os == 'linux') {
                     var cmd = 'cd database & xdg-open log.html';
@@ -218,7 +223,7 @@ class JDatabase {
         this.QueryCLI = (indentifier) => {
             if (indentifier == undefined) indentifier = '-/'
             const querystring = require('querystring');
-            console.log('< NJDB Query CLI started >')
+            console.log('[SJDB]', '< SJDB Query CLI started >')
 
             const rl = readline.createInterface({
               input: process.stdin,
@@ -285,7 +290,7 @@ class JDatabase {
                                 keyDel = keyDel.slice(0, -2)
                                 this.table(table).delete(keyDel)
                             }
-                        } else { this.log.write( 'Invalid NJDB CLI command!', 'danger' ) }
+                        } else { this.log.write( 'Invalid SJDB CLI command!', 'danger' ) }
 
                     } else if ( queryArr[1] == 'log' ) {
                         if ( queryArr[2] == 'open()' ) {
@@ -298,10 +303,10 @@ class JDatabase {
                             this.core.compress()
                         } else if (queryArr[2] == 'fancify()') {
                             this.core.fancify()
-                        } else { this.log.write( 'Invalid NJDB CLI command!', 'danger' )  }
-                    } else { this.log.write( 'Invalid NJDB CLI command!', 'danger' ) }
+                        } else { this.log.write( 'Invalid SJDB CLI command!', 'danger' )  }
+                    } else { this.log.write( 'Invalid SJDB CLI command!', 'danger' ) }
                 } else if ( queryArr[0] == 'help' ) {
-                    console.log(`< NJDB Query CLI help >
+                    console.log('[SJDB]', `< SJDB Query CLI help >
 
 ${indentifier}db
     .create(force[true||false@default]): Create a new database. Overwrite if true gived as arg.
@@ -326,7 +331,7 @@ ${indentifier}db
 
                     ops = ops.substring(0, ops.length - 1)
                     makeBenchmark(ops)
-                } else { this.log.write( 'Invalid NJDB CLI command!', 'danger' ) }
+                } else { this.log.write( 'Invalid SJDB CLI command!', 'danger' ) }
 
              }
             });
@@ -375,7 +380,7 @@ function makeBenchmark(ops) {
         fs.rmdirSync(benchDB.dir.path);
       }
     console.timeEnd('Delete')
-    console.log('When there is more than 1 000 keys in the same file, we recommand you to split a big database into smallers databases.')
+    console.log('[SJDB]', 'When there is more than 1 000 keys in the same file, we recommand you to split a big database into smallers databases.')
 }
 
 
